@@ -4,10 +4,6 @@ import "github.com/tidwall/gjson"
 
 func isString(value *gjson.Result) bool {
 
-	if !value.Exists() {
-		return false
-	}
-
 	_, ok := value.Value().(string)
 
 	return ok
@@ -20,7 +16,7 @@ type IsStringConstraint struct {
 
 //Validate Validates that a given value is a string
 func (sc *IsStringConstraint) Validate(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
-	if !value.Exists() || isString(value) {
+	if isEmpty(value) || isString(value) {
 		return
 	}
 

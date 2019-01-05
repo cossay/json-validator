@@ -13,7 +13,7 @@ type IsIntConstraint struct {
 
 //Validate Validates that a given value is an integer
 func (i *IsIntConstraint) Validate(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
-	if !value.Exists() || govalidator.IsInt(value.String()) {
+	if isEmpty(value) || govalidator.IsInt(value.String()) {
 		return
 	}
 
@@ -34,7 +34,7 @@ type LessThanConstraint struct {
 //Validate Validates that a given number is less than or equal to a given number
 func (lt *LessThanConstraint) Validate(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
 
-	if !value.Exists() || !govalidator.IsNumeric(value.String()) {
+	if isEmpty(value) || !govalidator.IsNumeric(value.String()) {
 		return
 	}
 
@@ -57,7 +57,7 @@ type LessThanOrEqualConstraint struct {
 //Validate Validates that a given number is less than or equal to a given number
 func (lte *LessThanOrEqualConstraint) Validate(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
 
-	if !value.Exists() || !govalidator.IsNumeric(value.String()) {
+	if isEmpty(value) || !govalidator.IsNumeric(value.String()) {
 		return
 	}
 
@@ -80,7 +80,7 @@ type GreaterThanConstraint struct {
 //Validate Validates that a given number is greater than a given number
 func (gt *GreaterThanConstraint) Validate(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
 
-	if !value.Exists() || !govalidator.IsNumeric(value.String()) {
+	if isEmpty(value) || !govalidator.IsNumeric(value.String()) {
 		return
 	}
 
@@ -103,7 +103,7 @@ type GreaterThanOrEqualConstraint struct {
 //Validate Validates that a given number is greater or equal to a given number
 func (lte *GreaterThanOrEqualConstraint) Validate(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
 
-	if !value.Exists() || !govalidator.IsNumeric(value.String()) {
+	if isEmpty(value) || !govalidator.IsNumeric(value.String()) {
 		return
 	}
 
@@ -126,7 +126,7 @@ type EqualToConstraint struct {
 //Validate Validates that a given value is equal to a given number
 func (et *EqualToConstraint) Validate(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
 
-	if !value.Exists() || !govalidator.IsNumeric(value.String()) {
+	if isEmpty(value) || !govalidator.IsNumeric(value.String()) {
 		return
 	}
 

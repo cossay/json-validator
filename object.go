@@ -9,7 +9,7 @@ type ObjectConstraint struct {
 
 //Validate Validates a given object
 func (oc *ObjectConstraint) Validate(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
-	if !value.Exists() || violations.Has(field) {
+	if isEmpty(value) || violations.Has(field) {
 		return
 	}
 
@@ -36,7 +36,7 @@ type IsObjectConstraint struct {
 //Validate Validates a given value is an object
 func (ioc *IsObjectConstraint) Validate(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
 
-	if !value.Exists() {
+	if isEmpty(value) {
 		return
 	}
 

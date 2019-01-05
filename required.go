@@ -6,6 +6,13 @@ import (
 	"github.com/tidwall/gjson"
 )
 
+func isEmpty(value *gjson.Result) bool {
+	if !value.Exists() || value.Type == gjson.Null || strings.TrimSpace(value.String()) == "" {
+		return true
+	}
+	return false
+}
+
 //RequiredConstraint Required validation constraint
 type RequiredConstraint struct {
 	message string
@@ -13,7 +20,7 @@ type RequiredConstraint struct {
 
 //Validate Validates a given value
 func (rc *RequiredConstraint) Validate(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
-	if !value.Exists() || value.Type == gjson.Null || strings.TrimSpace(value.String()) == "" {
+	if isEmpty(value) {
 		violations.Add(field, rc.message)
 	}
 }
