@@ -3,9 +3,7 @@ package jsonvalidator
 import "github.com/tidwall/gjson"
 
 func isString(value *gjson.Result) bool {
-
 	_, ok := value.Value().(string)
-
 	return ok
 }
 
