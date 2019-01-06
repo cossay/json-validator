@@ -7,7 +7,7 @@ import (
 
 //Email Creates a new email validation constraint
 func Email(message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if IsEmpty(value) {
 			return
 		}
@@ -20,7 +20,7 @@ func Email(message string) *Rule {
 
 //ExistingEmail Creates a constraint for validating a given value as an email of an existing domain
 func ExistingEmail(message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if IsEmpty(value) {
 			return
 		}

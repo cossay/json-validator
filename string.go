@@ -13,7 +13,7 @@ func IsString(value *gjson.Result) bool {
 
 //TypeString Returns a new instance of String validation constraint
 func TypeString(message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if IsEmpty(value) || IsString(value) {
 			return
 		}
@@ -24,7 +24,7 @@ func TypeString(message string) *Rule {
 
 //MinLength Creates a new MinLength validation constraint
 func MinLength(length int, message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if IsEmpty(value) || !IsString(value) {
 			return
 		}
@@ -37,7 +37,7 @@ func MinLength(length int, message string) *Rule {
 
 //MaxLength Creates a new MaxLength validation constraint
 func MaxLength(length int, message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if IsEmpty(value) || !IsString(value) {
 			return
 		}
@@ -50,7 +50,7 @@ func MaxLength(length int, message string) *Rule {
 
 //Length Creates a constraint for validating length of a string
 func Length(length int, message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if IsEmpty(value) || !IsString(value) {
 			return
 		}
@@ -63,7 +63,7 @@ func Length(length int, message string) *Rule {
 
 //IPV4 Creates a constraint for validating IP address
 func IPV4(message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if IsEmpty(value) {
 			return
 		}
@@ -76,7 +76,7 @@ func IPV4(message string) *Rule {
 
 //IPV6 Creates a constraint for validating IP address
 func IPV6(message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if IsEmpty(value) {
 			return
 		}
@@ -89,7 +89,7 @@ func IPV6(message string) *Rule {
 
 //Latitude Creates a constraint for validating latitudes
 func Latitude(message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if IsEmpty(value) {
 			return
 		}
@@ -102,7 +102,7 @@ func Latitude(message string) *Rule {
 
 //Longitude Creates a constraint for validating Longitude
 func Longitude(message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if IsEmpty(value) {
 			return
 		}
@@ -115,7 +115,7 @@ func Longitude(message string) *Rule {
 
 //Port Creates a constraint for validating Longitude
 func Port(message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if IsEmpty(value) {
 			return
 		}
@@ -128,7 +128,7 @@ func Port(message string) *Rule {
 
 //Alpha Creates a constraint for validating alpha characters
 func Alpha(message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if IsEmpty(value) {
 			return
 		}
@@ -141,7 +141,7 @@ func Alpha(message string) *Rule {
 
 //AlphaNumberic Creates a constraint for validating alpha numeric characters
 func AlphaNumberic(message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if IsEmpty(value) {
 			return
 		}
@@ -154,7 +154,7 @@ func AlphaNumberic(message string) *Rule {
 
 //Lowercase Creates a constraint for validating lowercase characters
 func Lowercase(message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if IsEmpty(value) {
 			return
 		}
@@ -167,7 +167,7 @@ func Lowercase(message string) *Rule {
 
 //Uppercase Creates a constraint for validating uppercase characters
 func Uppercase(message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if IsEmpty(value) {
 			return
 		}
@@ -180,7 +180,7 @@ func Uppercase(message string) *Rule {
 
 //ASCII Creates a constraint for validating ASCII characters
 func ASCII(message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if IsEmpty(value) {
 			return
 		}
@@ -193,7 +193,7 @@ func ASCII(message string) *Rule {
 
 //Phone Creates a constraint for validating phone numbers
 func Phone(message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if IsEmpty(value) {
 			return
 		}

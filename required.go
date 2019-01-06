@@ -16,7 +16,7 @@ func IsEmpty(value *gjson.Result) bool {
 
 //Required Required validation constraint
 func Required(message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if IsEmpty(value) {
 			violations.Add(field, message)
 		}

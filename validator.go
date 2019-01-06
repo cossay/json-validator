@@ -2,6 +2,7 @@ package jsonvalidator
 
 import (
 	"errors"
+	"time"
 
 	"github.com/tidwall/gjson"
 )
@@ -28,11 +29,11 @@ func (vs Violations) Has(field string) bool {
 
 //Constraint Validation constraint
 type Constraint interface {
-	Validate(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations)
+	Validate(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator)
 }
 
 //ValidatorFunc Validation function
-type ValidatorFunc func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations)
+type ValidatorFunc func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator)
 
 //Rule Rule
 type Rule struct {
@@ -40,11 +41,11 @@ type Rule struct {
 }
 
 //Validate Validates
-func (r *Rule) Validate(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+func (r *Rule) Validate(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 	if nil == r.validator {
 		return
 	}
-	r.validator(field, value, parent, source, violations)
+	r.validator(field, value, parent, source, violations, validator)
 }
 
 //NewRule NewRule
@@ -54,6 +55,9 @@ func NewRule(validator ValidatorFunc) *Rule {
 
 //Validator Validator service
 type Validator struct {
+	DateTimeFormat string
+	TimeFormat     string
+	DateFormat     string
 }
 
 //Validate Validates a given data againts a set of rules
@@ -69,9 +73,18 @@ func (v *Validator) Validate(input []byte, constraints map[string][]Constraint) 
 	for field, rules := range constraints {
 		for _, rule := range rules {
 			value := data.Get(field)
-			rule.Validate(field, &value, &data, &data, violations)
+			rule.Validate(field, &value, &data, &data, violations, v)
 		}
 	}
 
 	return violations, nil
+}
+
+//NewValidator Creates a new validator with default configuration
+func NewValidator() *Validator {
+	return &Validator{
+		DateTimeFormat: time.RFC3339,
+		TimeFormat:     "15:04:05",
+		DateFormat:     "2006-01-02",
+	}
 }

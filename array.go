@@ -8,7 +8,7 @@ import (
 
 //TypeArray Validates that a given value is an array
 func TypeArray(message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if IsEmpty(value) {
 			return
 		}
@@ -21,7 +21,7 @@ func TypeArray(message string) *Rule {
 
 //Array Returns an instance of Array validation constraints
 func Array(constraints []Constraint) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if !value.IsArray() {
 			return
 		}
@@ -29,7 +29,7 @@ func Array(constraints []Constraint) *Rule {
 		for index, item := range value.Array() {
 			for _, rule := range constraints {
 				entryField := fmt.Sprintf("%s.%d", field, index)
-				rule.Validate(entryField, &item, value, source, violations)
+				rule.Validate(entryField, &item, value, source, violations, validator)
 			}
 		}
 	})
@@ -37,7 +37,7 @@ func Array(constraints []Constraint) *Rule {
 
 //ArrayMinLength Creates a new ArrayMinLength constraint
 func ArrayMinLength(length int, message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if !value.IsArray() {
 			return
 		}
@@ -50,7 +50,7 @@ func ArrayMinLength(length int, message string) *Rule {
 
 //ArrayMaxLength Creates a new ArrayMaxLength constraint
 func ArrayMaxLength(length int, message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if !value.IsArray() {
 			return
 		}
@@ -63,7 +63,7 @@ func ArrayMaxLength(length int, message string) *Rule {
 
 //ArrayLength Creates a new ArrayLength constraint
 func ArrayLength(length int, message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if !value.IsArray() {
 			return
 		}
