@@ -31,6 +31,27 @@ type Constraint interface {
 	Validate(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations)
 }
 
+//ValidatorFunc Validation function
+type ValidatorFunc func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations)
+
+//Rule Rule
+type Rule struct {
+	validator ValidatorFunc
+}
+
+//Validate Validates
+func (r *Rule) Validate(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+	if nil == r.validator {
+		return
+	}
+	r.validator(field, value, parent, source, violations)
+}
+
+//NewRule NewRule
+func NewRule(validator ValidatorFunc) *Rule {
+	return &Rule{validator: validator}
+}
+
 //Validator Validator service
 type Validator struct {
 }

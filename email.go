@@ -5,23 +5,28 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-//EmailConstraint Email validation constraint
-type EmailConstraint struct {
-	message string
-}
-
-//Validate Validates an email
-func (e *EmailConstraint) Validate(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
-	if isEmpty(value) {
-		return
-	}
-
-	if !isString(value) || !govalidator.IsEmail(value.String()) {
-		violations.Add(field, e.message)
-	}
-}
-
 //Email Creates a new email validation constraint
-func Email(message string) *EmailConstraint {
-	return &EmailConstraint{message: message}
+func Email(message string) *Rule {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+		if IsEmpty(value) {
+			return
+		}
+
+		if !IsString(value) || !govalidator.IsEmail(value.String()) {
+			violations.Add(field, message)
+		}
+	})
+}
+
+//ExistingEmail Creates a constraint for validating a given value as an email of an existing domain
+func ExistingEmail(message string) *Rule {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations) {
+		if IsEmpty(value) {
+			return
+		}
+
+		if !IsString(value) || !govalidator.IsExistingEmail(value.String()) {
+			violations.Add(field, message)
+		}
+	})
 }
