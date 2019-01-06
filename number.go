@@ -30,7 +30,7 @@ func TypeInt(message string) *Rule {
 //LessThan Creates new validation constraint to check if a given number is less than  agiven number
 func LessThan(limit float64, message string) *Rule {
 	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
-		if IsEmpty(value) || !IsNumber(value) {
+		if IsEmpty(value) {
 			return
 		}
 
@@ -43,7 +43,7 @@ func LessThan(limit float64, message string) *Rule {
 //LessThanOrEqual Creates new validation constraint to check if a given number is less than or equal to agiven number
 func LessThanOrEqual(limit float64, message string) *Rule {
 	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
-		if IsEmpty(value) || !IsNumber(value) {
+		if IsEmpty(value) {
 			return
 		}
 
@@ -56,7 +56,7 @@ func LessThanOrEqual(limit float64, message string) *Rule {
 //GreaterThan Creates new validation constraint to check if a given number is greater than  agiven number
 func GreaterThan(limit float64, message string) *Rule {
 	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
-		if IsEmpty(value) || !IsNumber(value) {
+		if IsEmpty(value) {
 			return
 		}
 
@@ -69,7 +69,7 @@ func GreaterThan(limit float64, message string) *Rule {
 //GreaterThanOrEqual Creates new validation constraint to check if a given number is greater than or equal to agiven number
 func GreaterThanOrEqual(limit float64, message string) *Rule {
 	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
-		if IsEmpty(value) || !IsNumber(value) {
+		if IsEmpty(value) {
 			return
 		}
 
@@ -82,11 +82,34 @@ func GreaterThanOrEqual(limit float64, message string) *Rule {
 //EqualTo Creates new validation constraint to check if a given number is equal to agiven number
 func EqualTo(limit float64, message string) *Rule {
 	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
-		if IsEmpty(value) || !IsNumber(value) {
+		if IsEmpty(value) {
 			return
 		}
 
 		if value.Float() != limit {
+			violations.Add(field, message)
+		}
+	})
+}
+
+//TypeFloat Creates new validation constraint for Floats
+func TypeFloat(message string) *Rule {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
+		if IsEmpty(value) || IsNumber(value) {
+			return
+		}
+		violations.Add(field, message)
+	})
+}
+
+//TypeDecimal Creates new validation constraint for Decimals (string quoted numbers)
+func TypeDecimal(message string) *Rule {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
+		if IsEmpty(value) {
+			return
+		}
+
+		if !IsString(value) || !govalidator.IsFloat(value.String()) {
 			violations.Add(field, message)
 		}
 	})

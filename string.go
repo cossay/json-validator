@@ -203,3 +203,34 @@ func Phone(message string) *Rule {
 		}
 	})
 }
+
+//URL Creates a constraint for validating URL
+func URL(message string) *Rule {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
+		if IsEmpty(value) {
+			return
+		}
+
+		if !IsString(value) || !govalidator.IsURL(value.String()) {
+			violations.Add(field, message)
+		}
+	})
+}
+
+//Subdomain Creates a constraint for validating Subdomain
+func Subdomain(message string) *Rule {
+	return Pattern(`^[A-Za-z0-9](?:[A-Za-z0-9\-.]{0,61}[A-Za-z0-9])?$`, message)
+}
+
+//Pattern Creates a constraint for validating a string againt a given pattern
+func Pattern(pattern, message string) *Rule {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
+		if IsEmpty(value) {
+			return
+		}
+
+		if !IsString(value) || !govalidator.Matches(value.String(), pattern) {
+			violations.Add(field, message)
+		}
+	})
+}
