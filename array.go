@@ -3,6 +3,8 @@ package jsonvalidator
 import (
 	"fmt"
 
+	"github.com/google/go-cmp/cmp"
+
 	"github.com/tidwall/gjson"
 )
 
@@ -70,6 +72,32 @@ func ArrayLength(length int, message string) *Rule {
 
 		if len(value.Array()) != length {
 			violations.Add(field, message)
+		}
+	})
+}
+
+//ArrayUnique Creates a new constraint for ensuring that elements of an array are unique
+func ArrayUnique(message string) *Rule {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
+		if !value.IsArray() {
+			return
+		}
+
+		x := value.Array()
+
+		for _, item := range value.Array() {
+			counts := 0
+
+			for _, target := range x {
+				if cmp.Equal(item.Value(), target.Value()) {
+					counts++
+				}
+			}
+
+			if counts > 1 {
+				violations.Add(field, message)
+				break
+			}
 		}
 	})
 }

@@ -8,6 +8,9 @@ github.com/tidwall/gjson
 ``` 
 github.com/asaskevich/govalidator
  ```
+ ```
+ github.com/google/go-cmp/cmp
+ ```
 
 ## Installation
 ```
