@@ -193,15 +193,7 @@ func ASCII(message string) *Rule {
 
 //Phone Creates a constraint for validating phone numbers
 func Phone(message string) *Rule {
-	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
-		if IsEmpty(value) {
-			return
-		}
-		pattern := `^[+]?([\d]{0,3})?[\(\.\-\s]?(([\d]{1,3})[\)\.\-\s]*)?(([\d]{3,5})[\.\-\s]?([\d]{4})|([\d]{2}[\.\-\s]?){4})$`
-		if !IsString(value) || !govalidator.Matches(value.String(), pattern) {
-			violations.Add(field, message)
-		}
-	})
+	return Pattern(`^[+]?([\d]{0,3})?[\(\.\-\s]?(([\d]{1,3})[\)\.\-\s]*)?(([\d]{3,5})[\.\-\s]?([\d]{4})|([\d]{2}[\.\-\s]?){4})$`, message)
 }
 
 //URL Creates a constraint for validating URL
