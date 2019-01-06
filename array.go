@@ -86,15 +86,15 @@ func ArrayUnique(message string) *Rule {
 		x := value.Array()
 
 		for _, item := range value.Array() {
-			counts := 0
+			duplicates := 0
 
 			for _, target := range x {
 				if cmp.Equal(item.Value(), target.Value()) {
-					counts++
+					duplicates++
 				}
 			}
 
-			if counts > 1 {
+			if duplicates > 1 {
 				violations.Add(field, message)
 				break
 			}
