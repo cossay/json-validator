@@ -130,7 +130,7 @@ func (v *Validator) Validate(document []byte, constraints map[string][]Constrain
 //CheckDocument Checks validity of a JSON document
 func (v *Validator) CheckDocument(document []byte) error {
 	if !gjson.ValidBytes(document) {
-		return errors.New("Invalid JSON document")
+		return errors.New("Invalid JSON document. ")
 	}
 
 	return nil

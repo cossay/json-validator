@@ -95,7 +95,7 @@ func main() {
 	v := validator.NewValidator()
 
 	if e := v.CheckDocument(data); nil != e {
-		panic(e)
+		panic(e) 
 	}
 
 	fmt.Println(v.Validate(data, constraints))
