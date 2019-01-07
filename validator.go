@@ -1,6 +1,7 @@
 package jsonvalidator
 
 import (
+	"encoding/json"
 	"errors"
 	"sync"
 	"time"
@@ -12,6 +13,11 @@ import (
 type Violations struct {
 	sync.RWMutex
 	errors map[string]string
+}
+
+//MarshalJSON JSON marshaller
+func (vs *Violations) MarshalJSON() ([]byte, error) {
+	return json.Marshal(vs.errors)
 }
 
 //Add Adds a new error for a given field
