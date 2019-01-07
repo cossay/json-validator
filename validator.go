@@ -20,6 +20,12 @@ func (vs *Violations) MarshalJSON() ([]byte, error) {
 	return json.Marshal(vs.errors)
 }
 
+//String Returns string representation of violoations
+func (vs *Violations) String() string {
+	j, _ := vs.MarshalJSON()
+	return string(j)
+}
+
 //Add Adds a new error for a given field
 func (vs *Violations) Add(field string, message string) {
 	if !vs.Has(field) {
@@ -107,13 +113,8 @@ type Validator struct {
 }
 
 //Validate Validates a given data againts a set of rules
-func (v *Validator) Validate(input []byte, constraints map[string][]Constraint) (*Violations, error) {
-
-	if !gjson.ValidBytes(input) {
-		return nil, errors.New("Invalid JSON document. ")
-	}
-
-	data := gjson.ParseBytes(input)
+func (v *Validator) Validate(document []byte, constraints map[string][]Constraint) *Violations {
+	data := gjson.ParseBytes(document)
 	violations := NewViolations()
 
 	for field, rules := range constraints {
@@ -123,7 +124,16 @@ func (v *Validator) Validate(input []byte, constraints map[string][]Constraint) 
 		}
 	}
 
-	return violations, nil
+	return violations
+}
+
+//CheckDocument Checks validity of a JSON document
+func (v *Validator) CheckDocument(document []byte) error {
+	if !gjson.ValidBytes(document) {
+		return errors.New("Invalid JSON document")
+	}
+
+	return nil
 }
 
 //NewValidator Creates a new validator with default configuration

@@ -91,15 +91,14 @@ func main() {
 			}),
 		},
 	}
-	v := &validator.Validator{}
-	r, e := v.Validate(data, constraints)
+	
+	v := validator.NewValidator()
 
-	if nil != e {
-		fmt.Println(e.Error())
-	} else {
-		j, _ := json.Marshal(r)
-		fmt.Println(string(j))
+	if e := v.CheckDocument(data); nil != e {
+		panic(e)
 	}
+
+	fmt.Println(v.Validate(data, constraints))
 }
 
 ```
