@@ -1,6 +1,8 @@
 package jsonvalidator
 
 import (
+	"strings"
+
 	"github.com/asaskevich/govalidator"
 	"github.com/tidwall/gjson"
 )
@@ -9,6 +11,20 @@ import (
 func IsString(value *gjson.Result) bool {
 	_, ok := value.Value().(string)
 	return ok
+}
+
+//CollapseWhiteSpaces Remove all whitespaces from a given string
+func CollapseWhiteSpaces(value string) string {
+	strs := make([]string, 0)
+
+	for _, s := range strings.Split(value, " ") {
+		tmpStr := strings.TrimSpace(s)
+
+		if 0 != len(tmpStr) {
+			strs = append(strs, tmpStr)
+		}
+	}
+	return strings.Join(strs, " ")
 }
 
 //TypeString Returns a new instance of String validation constraint
