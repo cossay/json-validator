@@ -59,12 +59,12 @@ func main() {
 		},
 		"age": []validator.Constraint{
 			validator.Required("Age is required"),
-			validator.IsInt("Age must be a integer"),
+			validator.TypeInt("Age must be a integer"),
 			validator.EqualTo(10, "Age must be equal to 10"),
 		},
 		"school": []validator.Constraint{
 			validator.Required("School is required"),
-			validator.IsObject("School must be an object"),
+			validator.TypeObject("School must be an object"),
 			validator.Object(map[string][]validator.Constraint{
 				"name": []validator.Constraint{
 					validator.Required("School name required"),
@@ -78,14 +78,14 @@ func main() {
 			validator.ArrayLength(3, "Exactly 3 friends required."),
 			validator.Array([]validator.Constraint{
 				validator.Required("Friend is required"),
-				validator.IsObject("Friend must be an object"),
+				validator.TypeObject("Friend must be an object"),
 				validator.Object(map[string][]validator.Constraint{
 					"name": []validator.Constraint{
 						validator.Required("Friend name required"),
 					},
 					"age": []validator.Constraint{
 						validator.Required("Age is required"),
-						validator.String("Age must be a string."),
+						validator.TypeString("Age must be a string."),
 					},
 				}),
 			}),
