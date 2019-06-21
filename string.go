@@ -13,7 +13,7 @@ func IsString(value *gjson.Result) bool {
 	return ok
 }
 
-//CollapseWhiteSpaces Remove all whitespaces from a given string
+//CollapseWhiteSpaces Remove all preceeding whitespaces from a given string
 func CollapseWhiteSpaces(value string) string {
 	strs := make([]string, 0)
 

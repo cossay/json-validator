@@ -1,6 +1,7 @@
 package jsonvalidator
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/tidwall/gjson"
@@ -19,6 +20,24 @@ func Required(message string) *Rule {
 	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
 		if IsEmpty(value) {
 			violations.Add(field, message)
+		}
+	})
+}
+
+//NotExpected Unpected field validation constraint
+func NotExpected(message string) *Rule {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
+		if value.Exists() {
+			violations.Add(field, message)
+		}
+	})
+}
+
+//NotExpectedDefault Same as NotExpected but with hard coded message
+func NotExpectedDefault() *Rule {
+	return NewRule(func(field string, value *gjson.Result, parent *gjson.Result, source *gjson.Result, violations *Violations, validator *Validator) {
+		if value.Exists() {
+			violations.Add(field, fmt.Sprintf("Field '%s' was not expected", field))
 		}
 	})
 }
